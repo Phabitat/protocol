@@ -1,0 +1,23 @@
+{
+    "name": "phabitat/protocol",
+    "description": "",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ian Bytchek",
+            "email": "ianbytchek@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Protocol\\": "source"
+        }
+    },
+    "require": {
+        "phabitat/spl": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
