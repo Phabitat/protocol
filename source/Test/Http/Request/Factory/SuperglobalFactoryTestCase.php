@@ -2,11 +2,44 @@
 
 namespace Protocol\Test\Http\Request\Factory;
 
+use Protocol\Http\Constant\MediaType;
+use Protocol\Http\Request\Constant\Method;
 use Protocol\Http\Request\Factory\SuperglobalsFactory;
 use Protocol\Test\AbstractTestCase;
 
 class SuperglobalFactoryTestCase extends AbstractTestCase
 {
+
+    /**
+     * @covers \Protocol\Http\Request\Factory\SuperglobalsFactory::isJsonAsPost
+     * @covers \Protocol\Http\Request\Factory\SuperglobalsFactory::useJsonAsPost
+     */
+    public function testJsonAsPost()
+    {
+        $json = [
+            'foo' => 'bar',
+            'baz' => [
+                'a' => 'Letter A',
+                'b' => 'Letter B',
+                'c' => 'Letter C'
+            ]
+        ];
+
+        $factory = SuperglobalsFactory::instance()
+            ->setInput(json_encode($json))
+            ->setPost([])
+            ->setServer(['CONTENT_TYPE' => MediaType::JSON, 'REQUEST_METHOD' => Method::POST]);
+
+        // Check with json as post option on.
+
+        $request = $factory->construct();
+        $this->assertSame($json, $request->getPostParameters());
+
+        // Check with json as post option off.
+
+        $request = $factory->useJsonAsPost(false)->construct();
+        $this->assertSame([], $request->getPostParameters());
+    }
 
     /**
      * @covers \Protocol\Http\Request\Factory\SuperglobalsFactory::normaliseFiles
